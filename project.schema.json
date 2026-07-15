@@ -1,0 +1,223 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "LSS DMAIC Project",
+  "description": "One file per Lean Six Sigma project, stored at data/projects/<slug>.json. Filename must equal <slug>.json.",
+  "type": "object",
+  "required": ["id", "slug", "title", "sponsor", "owner", "businessUnit", "status", "currentPhase", "startDate", "define"],
+  "properties": {
+    "id": { "type": "string", "description": "Stable unique identifier, e.g. proj-2026-0007" },
+    "slug": { "type": "string", "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$", "description": "URL-safe slug, must match the filename" },
+    "title": { "type": "string" },
+    "sponsor": { "type": "string", "description": "Executive sponsor, e.g. 'Jane Smith, VP Finance'" },
+    "owner": { "type": "string", "description": "Project lead / Black Belt / Green Belt name" },
+    "team": { "type": "array", "items": { "type": "string" } },
+    "businessUnit": { "type": "string" },
+    "status": { "type": "string", "enum": ["Not Started", "In Progress", "Completed", "On Hold", "Cancelled"] },
+    "currentPhase": { "type": "string", "enum": ["Define", "Measure", "Analyze", "Improve", "Control"] },
+    "startDate": { "type": "string", "format": "date" },
+    "targetCompletionDate": { "type": ["string", "null"], "format": "date" },
+    "actualCompletionDate": { "type": ["string", "null"], "format": "date" },
+    "financialImpact": {
+      "type": "object",
+      "properties": {
+        "type": { "type": "string", "enum": ["Hard Savings", "Soft Savings", "Cost Avoidance", "Revenue"] },
+        "annualizedAmountUSD": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string", "default": "USD" },
+        "notes": { "type": "string" }
+      }
+    },
+    "define": {
+      "type": "object",
+      "description": "Charter, SIPOC, and Voice of Customer",
+      "required": ["problemStatement", "goalStatement"],
+      "properties": {
+        "problemStatement": { "type": "string" },
+        "goalStatement": { "type": "string" },
+        "scope": {
+          "type": "object",
+          "properties": {
+            "inScope": { "type": "array", "items": { "type": "string" } },
+            "outOfScope": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "businessCase": { "type": "string" },
+        "team": {
+          "type": "object",
+          "properties": {
+            "sponsor": { "type": "string" },
+            "blackBelt": { "type": "string" },
+            "processOwner": { "type": "string" },
+            "members": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "sipoc": {
+          "type": "object",
+          "properties": {
+            "suppliers": { "type": "array", "items": { "type": "string" } },
+            "inputs": { "type": "array", "items": { "type": "string" } },
+            "process": { "type": "array", "items": { "type": "string" } },
+            "outputs": { "type": "array", "items": { "type": "string" } },
+            "customers": { "type": "array", "items": { "type": "string" } }
+          }
+        },
+        "voc": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "source": { "type": "string" },
+              "need": { "type": "string" },
+              "criticalToQuality": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "measure": {
+      "type": "object",
+      "description": "Data collection plan and baseline metrics",
+      "properties": {
+        "dataCollectionPlan": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "metric": { "type": "string" },
+              "operationalDefinition": { "type": "string" },
+              "dataSource": { "type": "string" },
+              "sampleSize": { "type": "number" },
+              "collectionPeriod": { "type": "string" }
+            }
+          }
+        },
+        "baselineMetrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "metric": { "type": "string" },
+              "baselineValue": { "type": "number" },
+              "unit": { "type": "string" }
+            }
+          }
+        },
+        "processSigma": { "type": "number" },
+        "cpk": { "type": "number" },
+        "notes": { "type": "string" }
+      }
+    },
+    "analyze": {
+      "type": "object",
+      "description": "Root cause analysis and findings",
+      "properties": {
+        "rootCauseAnalysis": {
+          "type": "object",
+          "properties": {
+            "fishbone": {
+              "type": "object",
+              "properties": {
+                "categories": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "category": { "type": "string", "description": "One of the 6Ms: Method, Machine, Material, Manpower, Measurement, Environment" },
+                      "causes": { "type": "array", "items": { "type": "string" } }
+                    }
+                  }
+                }
+              }
+            },
+            "fiveWhys": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "problem": { "type": "string" },
+                  "whys": { "type": "array", "items": { "type": "string" }, "maxItems": 5 }
+                }
+              }
+            }
+          }
+        },
+        "pareto": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "category": { "type": "string" },
+              "count": { "type": "number" }
+            }
+          }
+        },
+        "findings": { "type": "string" }
+      }
+    },
+    "improve": {
+      "type": "object",
+      "description": "Solutions implemented and pilot results",
+      "properties": {
+        "solutions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "description": { "type": "string" },
+              "owner": { "type": "string" },
+              "implementationDate": { "type": "string", "format": "date" }
+            }
+          }
+        },
+        "pilotResults": {
+          "type": "object",
+          "properties": {
+            "pilotPeriod": { "type": "string" },
+            "metricsBefore": { "type": "array", "items": { "type": "object" } },
+            "metricsAfter": { "type": "array", "items": { "type": "object" } },
+            "summary": { "type": "string" }
+          }
+        }
+      }
+    },
+    "control": {
+      "type": "object",
+      "description": "Control plan and final results",
+      "properties": {
+        "controlPlan": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "metric": { "type": "string" },
+              "target": { "type": "string" },
+              "frequency": { "type": "string" },
+              "owner": { "type": "string" },
+              "responseIfOutOfControl": { "type": "string" }
+            }
+          }
+        },
+        "monitoringMetrics": { "type": "array", "items": { "type": "string" } },
+        "standardWorkDocs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "url": { "type": "string" }
+            }
+          }
+        },
+        "finalResults": {
+          "type": "object",
+          "properties": {
+            "summary": { "type": "string" },
+            "actualAnnualizedSavingsUSD": { "type": "number" },
+            "cycleTimeAfter": { "type": "number" }
+          }
+        }
+      }
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

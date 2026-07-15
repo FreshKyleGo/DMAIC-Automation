@@ -1,0 +1,19 @@
+{
+  "name": "lss-dmaic-portfolio",
+  "version": "1.0.0",
+  "description": "Static Lean Six Sigma DMAIC project portfolio site with automated document generation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "pdfs": "node scripts/generate-pdfs.js",
+    "serve": "serve dist"
+  },
+  "devDependencies": {
+    "puppeteer": "^23.0.0",
+    "serve": "^14.2.6"
+  },
+  "allowScripts": {
+    "puppeteer@23.11.1": true
+  }
+}

@@ -1,0 +1,76 @@
+:root {
+  --color-define: #2563eb;
+  --color-control: #7c3aed;
+}
+
+* { box-sizing: border-box; }
+
+body.print-doc {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: #1a1a1a;
+  background: #fff;
+  margin: 0;
+  padding: 0.75in;
+  max-width: 8.5in;
+}
+
+.print-letterhead {
+  border-bottom: 3px solid var(--color-define);
+  padding-bottom: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.print-letterhead h1 {
+  margin: 0 0 0.15rem;
+  font-size: 1.6rem;
+}
+
+.print-doc-type {
+  margin: 0 0 0.4rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--color-define);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.print-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.print-content h2 {
+  font-size: 1.25rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.25rem;
+  margin-top: 1.75rem;
+}
+
+.print-content h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.35rem;
+}
+
+.print-content table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0 1rem;
+  font-size: 0.9rem;
+}
+
+.print-content table.data-table th,
+.print-content table.data-table td {
+  border: 1px solid #ccc;
+  padding: 0.35rem 0.5rem;
+  text-align: left;
+}
+
+.print-content table.data-table th {
+  background: #f0f0f0;
+}
+
+@media print {
+  body.print-doc { padding: 0; }
+  a { color: inherit; text-decoration: none; }
+}

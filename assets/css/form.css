@@ -1,0 +1,110 @@
+fieldset {
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  background: var(--color-surface);
+}
+
+legend {
+  font-weight: 700;
+  padding: 0 0.5rem;
+}
+
+form label {
+  display: block;
+  margin-bottom: 0.9rem;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+form label .req {
+  color: #dc2626;
+}
+
+form input,
+form select,
+form textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.sipoc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+
+.repeat-container {
+  margin-bottom: 1rem;
+}
+
+.repeat-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) auto;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.repeat-row input {
+  margin-top: 0;
+}
+
+.add-row,
+.remove-row {
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.remove-row {
+  color: #dc2626;
+  border-color: #dc2626;
+}
+
+.submit-button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--color-define);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.form-errors {
+  background: #fee2e2;
+  border: 1px solid #dc2626;
+  color: #991b1b;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-errors ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.2rem;
+}
+
+.form-success {
+  background: #dcfce7;
+  border: 1px solid #16a34a;
+  color: #166534;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}

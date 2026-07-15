@@ -1,0 +1,44 @@
+.wheel-slice {
+  cursor: pointer;
+  stroke: var(--color-surface);
+  stroke-width: 2;
+  transition: opacity 0.15s, filter 0.15s;
+  outline: none;
+}
+
+.wheel-slice:focus-visible {
+  stroke: #000;
+  stroke-width: 3;
+}
+
+.wheel-slice.current {
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.45));
+  stroke: #000;
+  stroke-width: 3;
+}
+
+.wheel-slice.complete {
+  opacity: 1;
+}
+
+.wheel-slice.future {
+  opacity: 0.35;
+}
+
+.wheel-slice[data-phase="define"] { fill: var(--color-define); }
+.wheel-slice[data-phase="measure"] { fill: var(--color-measure); }
+.wheel-slice[data-phase="analyze"] { fill: var(--color-analyze); }
+.wheel-slice[data-phase="improve"] { fill: var(--color-improve); }
+.wheel-slice[data-phase="control"] { fill: var(--color-control); }
+
+.wheel-label {
+  fill: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  pointer-events: none;
+  font-family: var(--font-sans);
+}
+
+.wheel-label.future {
+  opacity: 0.7;
+}

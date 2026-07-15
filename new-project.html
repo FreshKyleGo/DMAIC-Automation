@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New LSS Project — Intake Form</title>
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/form.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <a class="brand" href="index.html">LSS Project Portfolio</a>
+    <a class="button" href="index.html">View Portfolio</a>
+  </nav>
+
+  <main class="container">
+    <h1>New Project Intake</h1>
+    <p class="meta">Fill this out as your project progresses through DMAIC. When you submit, your browser will
+      <strong>download a JSON file</strong> — nothing is uploaded automatically. Send that file to the site
+      maintainer to be added to the portfolio.</p>
+
+    <div id="form-errors" class="form-errors" hidden></div>
+    <div id="form-success" class="form-success" hidden></div>
+
+    <form id="project-form">
+      <fieldset>
+        <legend>Project Info</legend>
+        <label>Project Title <span class="req">*</span><input name="title" required></label>
+        <label>Sponsor <span class="req">*</span><input name="sponsor" required placeholder="e.g. Jane Smith, VP Finance"></label>
+        <label>Owner / Lead <span class="req">*</span><input name="owner" required></label>
+        <label>Team Members (one per line)<textarea name="team" rows="3"></textarea></label>
+        <label>Business Unit <span class="req">*</span><input name="businessUnit" required></label>
+        <label>Status <span class="req">*</span>
+          <select name="status" required>
+            <option>Not Started</option>
+            <option selected>In Progress</option>
+            <option>Completed</option>
+            <option>On Hold</option>
+            <option>Cancelled</option>
+          </select>
+        </label>
+        <label>Current Phase <span class="req">*</span>
+          <select name="currentPhase" required>
+            <option>Define</option>
+            <option>Measure</option>
+            <option>Analyze</option>
+            <option>Improve</option>
+            <option>Control</option>
+          </select>
+        </label>
+        <label>Start Date <span class="req">*</span><input type="date" name="startDate" required></label>
+        <label>Target Completion Date<input type="date" name="targetCompletionDate"></label>
+        <label>Actual Completion Date<input type="date" name="actualCompletionDate"></label>
+        <label>Financial Impact Type
+          <select name="financialImpactType">
+            <option value="">—</option>
+            <option>Hard Savings</option>
+            <option>Soft Savings</option>
+            <option>Cost Avoidance</option>
+            <option>Revenue</option>
+          </select>
+        </label>
+        <label>Annualized Amount (USD)<input type="number" name="financialImpactAmount" min="0" step="1"></label>
+        <label>Financial Impact Notes<textarea name="financialImpactNotes" rows="2"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Define — Charter</legend>
+        <label>Problem Statement <span class="req">*</span><textarea name="problemStatement" rows="3" required></textarea></label>
+        <label>Goal Statement <span class="req">*</span><textarea name="goalStatement" rows="3" required></textarea></label>
+        <label>Business Case<textarea name="businessCase" rows="3"></textarea></label>
+        <label>In Scope (one per line)<textarea name="inScope" rows="3"></textarea></label>
+        <label>Out of Scope (one per line)<textarea name="outOfScope" rows="3"></textarea></label>
+        <label>Black Belt / Facilitator<input name="teamBlackBelt"></label>
+        <label>Process Owner<input name="teamProcessOwner"></label>
+
+        <h3>SIPOC (one item per line, per column)</h3>
+        <div class="sipoc-grid">
+          <label>Suppliers<textarea name="sipocSuppliers" rows="4"></textarea></label>
+          <label>Inputs<textarea name="sipocInputs" rows="4"></textarea></label>
+          <label>Process Steps<textarea name="sipocProcess" rows="4"></textarea></label>
+          <label>Outputs<textarea name="sipocOutputs" rows="4"></textarea></label>
+          <label>Customers<textarea name="sipocCustomers" rows="4"></textarea></label>
+        </div>
+
+        <h3>Voice of Customer</h3>
+        <div class="repeat-container" data-repeat="voc" data-fields="source,need,criticalToQuality">
+          <div class="repeat-rows"></div>
+          <template>
+            <div class="repeat-row">
+              <input data-field="source" placeholder="Source (e.g. Customer survey)">
+              <input data-field="need" placeholder="Need">
+              <input data-field="criticalToQuality" placeholder="Critical to Quality">
+              <button type="button" class="remove-row">Remove</button>
+            </div>
+          </template>
+          <button type="button" class="add-row" data-repeat="voc">+ Add VOC row</button>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Measure</legend>
+        <h3>Data Collection Plan</h3>
+        <div class="repeat-container" data-repeat="dataCollectionPlan" data-fields="metric,operationalDefinition,dataSource,sampleSize,collectionPeriod">
+          <div class="repeat-rows"></div>
+          <template>
+            <div class="repeat-row">
+              <input data-field="metric" placeholder="Metric">
+              <input data-field="operationalDefinition" placeholder="Operational Definition">
+              <input data-field="dataSource" placeholder="Data Source">
+              <input data-field="sampleSize" type="number" placeholder="Sample Size">
+              <input data-field="collectionPeriod" placeholder="Collection Period">
+              <button type="button" class="remove-row">Remove</button>
+            </div>
+          </template>
+          <button type="button" class="add-row" data-repeat="dataCollectionPlan">+ Add row</button>
+        </div>
+
+        <h3>Baseline Metrics</h3>
+        <div class="repeat-container" data-repeat="baselineMetrics" data-fields="metric,baselineValue,unit">
+          <div class="repeat-rows"></div>
+          <template>
+            <div class="repeat-row">
+              <input data-field="metric" placeholder="Metric">
+              <input data-field="baselineValue" type="number" step="any" placeholder="Baseline Value">
+              <input data-field="unit" placeholder="Unit">
+              <button type="button" class="remove-row">Remove</button>
+            </div>
+          </template>
+          <button type="button" class="add-row" data-repeat="baselineMetrics">+ Add row</button>
+        </div>
+
+        <label>Process Sigma<input type="number" step="any" name="processSigma"></label>
+        <label>Cpk<input type="number" step="any" name="cpk"></label>
+        <label>Measure Notes<textarea name="measureNotes" rows="2"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Analyze</legend>
+        <h3>Fishbone (6M) — one cause per line</h3>
+        <label>Method<textarea name="fishboneMethod" rows="2"></textarea></label>
+        <label>Machine<textarea name="fishboneMachine" rows="2"></textarea></label>
+        <label>Material<textarea name="fishboneMaterial" rows="2"></textarea></label>
+        <label>Manpower<textarea name="fishboneManpower" rows="2"></textarea></label>
+        <label>Measurement<textarea name="fishboneMeasurement" rows="2"></textarea></label>
+        <label>Environment<textarea name="fishboneEnvironment" rows="2"></textarea></label>
+
+        <h3>Five Whys</h3>
+        <label>Problem<input name="fiveWhysProblem"></label>
+        <label>Whys (one per line, up to 5)<textarea name="fiveWhysList" rows="5"></textarea></label>
+
+        <h3>Pareto of Causes</h3>
+        <div class="repeat-container" data-repeat="pareto" data-fields="category,count">
+          <div class="repeat-rows"></div>
+          <template>
+            <div class="repeat-row">
+              <input data-field="category" placeholder="Category">
+              <input data-field="count" type="number" placeholder="Count">
+              <button type="button" class="remove-row">Remove</button>
+            </div>
+          </template>
+          <button type="button" class="add-row" data-repeat="pareto">+ Add row</button>
+        </div>
+
+        <label>Findings<textarea name="findings" rows="3"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Improve</legend>
+        <h3>Solutions Implemented</h3>
+        <div class="repeat-container" data-repeat="solutions" data-fields="description,owner,implementationDate">
+          <div class="repeat-rows"></div>
+          <template>
+            <div class="repeat-row">
+              <input data-field="description" placeholder="Description">
+              <input data-field="owner" placeholder="Owner">
+              <input data-field="implementationDate" type="date">
+              <button type="button" class="remove-row">Remove</button>
+            </div>
+          </template>
+          <button type="button" class="add-row" data-repeat="solutions">+ Add row</button>
+        </div>
+
+        <label>Pilot Period<input name="pilotPeriod" placeholder="e.g. 2026-06-01 to 2026-06-30"></label>
+        <label>Pilot Results Summary<textarea name="pilotSummary" rows="2"></textarea></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Control</legend>
+        <h3>Control Plan</h3>
+        <div class="repeat-container" data-repeat="controlPlan" data-fields="metric,target,frequency,owner,responseIfOutOfControl">
+          <div class="repeat-rows"></div>
+          <template>
+            <div class="repeat-row">
+              <input data-field="metric" placeholder="Metric">
+              <input data-field="target" placeholder="Target">
+              <input data-field="frequency" placeholder="Frequency">
+              <input data-field="owner" placeholder="Owner">
+              <input data-field="responseIfOutOfControl" placeholder="Response if Out of Control">
+              <button type="button" class="remove-row">Remove</button>
+            </div>
+          </template>
+          <button type="button" class="add-row" data-repeat="controlPlan">+ Add row</button>
+        </div>
+
+        <label>Monitoring Metrics (one per line)<textarea name="monitoringMetrics" rows="3"></textarea></label>
+
+        <h3>Standard Work Documents</h3>
+        <div class="repeat-container" data-repeat="standardWorkDocs" data-fields="title,url">
+          <div class="repeat-rows"></div>
+          <template>
+            <div class="repeat-row">
+              <input data-field="title" placeholder="Document Title">
+              <input data-field="url" placeholder="URL" type="url">
+              <button type="button" class="remove-row">Remove</button>
+            </div>
+          </template>
+          <button type="button" class="add-row" data-repeat="standardWorkDocs">+ Add row</button>
+        </div>
+
+        <label>Final Results Summary<textarea name="finalResultsSummary" rows="2"></textarea></label>
+        <label>Actual Annualized Savings (USD)<input type="number" step="1" name="actualAnnualizedSavingsUSD"></label>
+        <label>Cycle Time After (days)<input type="number" step="any" name="cycleTimeAfter"></label>
+      </fieldset>
+
+      <button type="submit" class="submit-button">Generate Project File</button>
+    </form>
+  </main>
+
+  <script type="module" src="assets/js/intake-form.js"></script>
+</body>
+</html>
