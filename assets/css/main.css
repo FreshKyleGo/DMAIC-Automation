@@ -46,10 +46,11 @@ body {
   min-height: 100vh;
   font-family: var(--font-sans);
   background-color: var(--color-bg);
-  background-image: url("../img/background-motif.svg");
+  background-image: linear-gradient(rgba(248, 250, 252, 0.72), rgba(248, 250, 252, 0.72)), url("../img/HF-background.jpg");
   background-repeat: no-repeat;
-  background-position: top right;
-  background-size: min(640px, 70vw);
+  background-position: center top;
+  background-size: cover;
+  background-attachment: fixed;
   color: var(--color-text);
   line-height: 1.5;
 }
