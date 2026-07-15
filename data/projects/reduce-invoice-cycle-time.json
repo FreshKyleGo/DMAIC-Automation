@@ -13,8 +13,8 @@
   "actualCompletionDate": "2026-09-12",
   "financialImpact": {
     "type": "Hard Savings",
-    "annualizedAmountUSD": 125000,
-    "currency": "USD",
+    "annualizedAmount": 125000,
+    "currency": "EUR",
     "notes": "Based on FTE hours reduced x loaded rate"
   },
   "define": {
@@ -24,7 +24,7 @@
       "inScope": ["Accounts Payable invoice intake through approval", "PO-matched and non-PO invoices"],
       "outOfScope": ["Payment execution/banking", "Vendor onboarding process"]
     },
-    "businessCase": "Late payment penalties cost approximately $140K annually and are damaging key supplier relationships. Reducing cycle time also frees up 1.5 FTE of rework capacity.",
+    "businessCase": "Late payment penalties cost approximately €140K annually and are damaging key supplier relationships. Reducing cycle time also frees up 1.5 FTE of rework capacity.",
     "team": {
       "sponsor": "Jane Smith, VP Finance",
       "blackBelt": "Kyle Go",
@@ -63,7 +63,7 @@
           { "category": "Method", "causes": ["No standard PO-matching rule", "Manual routing for exceptions"] },
           { "category": "Machine", "causes": ["ERP requires manual data entry for non-EDI invoices"] },
           { "category": "Material", "causes": ["Incomplete PO numbers on invoices"] },
-          { "category": "Manpower", "causes": ["Single approver bottleneck for invoices over $5K"] },
+          { "category": "Manpower", "causes": ["Single approver bottleneck for invoices over €5K"] },
           { "category": "Measurement", "causes": ["No visibility into invoice aging until overdue"] },
           { "category": "Environment", "causes": ["Approvers often traveling, no mobile approval option"] }
         ]
@@ -115,7 +115,7 @@
     ],
     "finalResults": {
       "summary": "Full rollout sustained a 2.7-day average cycle time over the 90 days following implementation, exceeding the 3-day goal.",
-      "actualAnnualizedSavingsUSD": 118000,
+      "actualAnnualizedSavings": 118000,
       "cycleTimeAfter": 2.7
     }
   },

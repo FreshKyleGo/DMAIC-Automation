@@ -1,0 +1,32 @@
+<svg viewBox="0 0 640 640" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <!--
+    Decorative background watermark: a delivery box in motion, orbited by a
+    5-point DMAIC improvement cycle. Opacity is baked in here (not left to
+    CSS) so it stays a faint texture wherever this file is embedded.
+  -->
+  <g opacity="0.07">
+    <!-- Continuous-improvement cycle: dashed circle + 5 phase ticks -->
+    <circle cx="400" cy="300" r="200" fill="none" stroke="#91c13e" stroke-width="4" stroke-dasharray="16 12" />
+    <path d="M 388 102 L 414 96 L 402 118 Z" fill="#91c13e" />
+    <circle cx="400" cy="100" r="9" fill="#91c13e" />
+    <circle cx="590.2" cy="238.2" r="9" fill="#91c13e" />
+    <circle cx="517.6" cy="461.8" r="9" fill="#91c13e" />
+    <circle cx="282.4" cy="461.8" r="9" fill="#91c13e" />
+    <circle cx="209.8" cy="238.2" r="9" fill="#91c13e" />
+
+    <!-- Delivery box -->
+    <path d="M 330 340 L 300 300 L 400 340 Z" fill="none" stroke="#062115" stroke-width="4" stroke-linejoin="round" />
+    <path d="M 470 340 L 500 300 L 400 340 Z" fill="none" stroke="#062115" stroke-width="4" stroke-linejoin="round" />
+    <rect x="330" y="340" width="140" height="100" rx="8" fill="none" stroke="#062115" stroke-width="4" />
+    <line x1="400" y1="340" x2="400" y2="440" stroke="#062115" stroke-width="3" />
+
+    <!-- Efficiency check badge on the box front -->
+    <circle cx="400" cy="390" r="20" fill="none" stroke="#91c13e" stroke-width="4" />
+    <path d="M 391 390 L 397 397 L 411 380" fill="none" stroke="#91c13e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Motion lines trailing the box -->
+    <line x1="308" y1="468" x2="266" y2="486" stroke="#062115" stroke-width="4" stroke-linecap="round" />
+    <line x1="298" y1="490" x2="266" y2="504" stroke="#062115" stroke-width="4" stroke-linecap="round" />
+    <line x1="288" y1="512" x2="266" y2="522" stroke="#062115" stroke-width="4" stroke-linecap="round" />
+  </g>
+</svg>

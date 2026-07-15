@@ -80,8 +80,8 @@ function buildProjectObject(form) {
     actualCompletionDate: get('actualCompletionDate') || null,
     financialImpact: {
       type: get('financialImpactType') || undefined,
-      annualizedAmountUSD: num(get('financialImpactAmount')),
-      currency: 'USD',
+      annualizedAmount: num(get('financialImpactAmount')),
+      currency: 'EUR',
       notes: get('financialImpactNotes') || undefined
     },
     define: {
@@ -146,7 +146,7 @@ function buildProjectObject(form) {
       standardWorkDocs: collectRepeatRows(form, 'standardWorkDocs'),
       finalResults: {
         summary: get('finalResultsSummary') || undefined,
-        actualAnnualizedSavingsUSD: num(get('actualAnnualizedSavingsUSD')),
+        actualAnnualizedSavings: num(get('actualAnnualizedSavings')),
         cycleTimeAfter: num(get('cycleTimeAfter'))
       }
     },

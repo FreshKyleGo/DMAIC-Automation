@@ -147,8 +147,8 @@ export function renderControlContent(project) {
       final.summary
         ? `<h3>Final Results</h3><p>${escapeMultiline(final.summary)}</p>
            <p>${
-             typeof final.actualAnnualizedSavingsUSD === 'number'
-               ? `<strong>Annualized savings:</strong> $${final.actualAnnualizedSavingsUSD.toLocaleString('en-US')}<br>`
+             typeof final.actualAnnualizedSavings === 'number'
+               ? `<strong>Annualized savings:</strong> €${final.actualAnnualizedSavings.toLocaleString('en-US')}<br>`
                : ''
            }${typeof final.cycleTimeAfter === 'number' ? `<strong>Cycle time after:</strong> ${final.cycleTimeAfter} days` : ''}</p>`
         : ''

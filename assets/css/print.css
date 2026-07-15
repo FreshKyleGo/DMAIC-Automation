@@ -1,6 +1,7 @@
 :root {
   --color-define: #2563eb;
   --color-control: #7c3aed;
+  --color-brand-olive: #4d6400;
 }
 
 * { box-sizing: border-box; }
@@ -15,7 +16,7 @@ body.print-doc {
 }
 
 .print-letterhead {
-  border-bottom: 3px solid var(--color-define);
+  border-bottom: 3px solid var(--color-brand-olive);
   padding-bottom: 0.75rem;
   margin-bottom: 1.5rem;
 }
@@ -29,7 +30,7 @@ body.print-doc {
   margin: 0 0 0.4rem;
   font-size: 1.1rem;
   font-weight: bold;
-  color: var(--color-define);
+  color: var(--color-brand-olive);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }

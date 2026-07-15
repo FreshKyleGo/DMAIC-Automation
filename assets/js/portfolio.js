@@ -1,9 +1,9 @@
 import { renderProjectCard } from '../../templates/partials/project-card.mjs';
 
-function projectSavingsUSD(project) {
-  const actual = project.control && project.control.finalResults && project.control.finalResults.actualAnnualizedSavingsUSD;
+function projectSavings(project) {
+  const actual = project.control && project.control.finalResults && project.control.finalResults.actualAnnualizedSavings;
   if (typeof actual === 'number') return actual;
-  const planned = project.financialImpact && project.financialImpact.annualizedAmountUSD;
+  const planned = project.financialImpact && project.financialImpact.annualizedAmount;
   return typeof planned === 'number' ? planned : 0;
 }
 
@@ -41,7 +41,7 @@ function initPortfolio() {
 
     filtered.sort((a, b) => {
       if (sortBy === 'status') return a.status.localeCompare(b.status);
-      if (sortBy === 'savings') return projectSavingsUSD(b) - projectSavingsUSD(a);
+      if (sortBy === 'savings') return projectSavings(b) - projectSavings(a);
       return a.title.localeCompare(b.title);
     });
 

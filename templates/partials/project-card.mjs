@@ -4,15 +4,15 @@ function statusClass(status) {
   return String(status || '').toLowerCase().replace(/\s+/g, '-');
 }
 
-function formatUSD(amount) {
+function formatEUR(amount) {
   if (typeof amount !== 'number') return null;
-  return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+  return amount.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
 }
 
-function projectSavingsUSD(project) {
-  const actual = project.control && project.control.finalResults && project.control.finalResults.actualAnnualizedSavingsUSD;
+function projectSavings(project) {
+  const actual = project.control && project.control.finalResults && project.control.finalResults.actualAnnualizedSavings;
   if (typeof actual === 'number') return actual;
-  const planned = project.financialImpact && project.financialImpact.annualizedAmountUSD;
+  const planned = project.financialImpact && project.financialImpact.annualizedAmount;
   return typeof planned === 'number' ? planned : null;
 }
 
@@ -21,7 +21,7 @@ function projectSavingsUSD(project) {
  * page (build.js) and the client-side filter/sort re-render (portfolio.js).
  */
 export function renderProjectCard(project) {
-  const savings = formatUSD(projectSavingsUSD(project));
+  const savings = formatEUR(projectSavings(project));
   const completedDate = project.actualCompletionDate
     ? new Date(project.actualCompletionDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
     : null;

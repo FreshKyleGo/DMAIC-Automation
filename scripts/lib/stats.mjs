@@ -5,16 +5,16 @@ function daysBetween(startDate, endDate) {
 }
 
 function projectSavings(project) {
-  const actual = project.control && project.control.finalResults && project.control.finalResults.actualAnnualizedSavingsUSD;
+  const actual = project.control && project.control.finalResults && project.control.finalResults.actualAnnualizedSavings;
   if (typeof actual === 'number') return actual;
-  const planned = project.financialImpact && project.financialImpact.annualizedAmountUSD;
+  const planned = project.financialImpact && project.financialImpact.annualizedAmount;
   return typeof planned === 'number' ? planned : 0;
 }
 
 export function computePortfolioStats(projects) {
   const total = projects.length;
   const completed = projects.filter(p => p.status === 'Completed');
-  const totalSavingsUSD = projects.reduce((sum, p) => sum + projectSavings(p), 0);
+  const totalSavingsEUR = projects.reduce((sum, p) => sum + projectSavings(p), 0);
 
   const cycleTimes = completed
     .filter(p => p.startDate && p.actualCompletionDate)
@@ -29,7 +29,7 @@ export function computePortfolioStats(projects) {
     totalProjects: total,
     completedProjects: completed.length,
     inProgressProjects: projects.filter(p => p.status === 'In Progress').length,
-    totalSavingsUSD,
+    totalSavingsEUR,
     avgCycleTimeDays
   };
 }

@@ -21,8 +21,8 @@
       "type": "object",
       "properties": {
         "type": { "type": "string", "enum": ["Hard Savings", "Soft Savings", "Cost Avoidance", "Revenue"] },
-        "annualizedAmountUSD": { "type": "number", "minimum": 0 },
-        "currency": { "type": "string", "default": "USD" },
+        "annualizedAmount": { "type": "number", "minimum": 0 },
+        "currency": { "type": "string", "default": "EUR" },
         "notes": { "type": "string" }
       }
     },
@@ -211,7 +211,7 @@
           "type": "object",
           "properties": {
             "summary": { "type": "string" },
-            "actualAnnualizedSavingsUSD": { "type": "number" },
+            "actualAnnualizedSavings": { "type": "number" },
             "cycleTimeAfter": { "type": "number" }
           }
         }

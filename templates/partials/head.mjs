@@ -1,4 +1,5 @@
 import { escapeHtml } from '../../scripts/lib/html-escape.mjs';
+import { FAVICON_DATA_URI } from './brand.mjs';
 
 /**
  * @param {object} opts
@@ -11,5 +12,6 @@ export function renderHead({ title, basePath = '', css = ['main.css'] }) {
   return `<meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${escapeHtml(title)}</title>
+  <link rel="icon" type="image/x-icon" href="${FAVICON_DATA_URI}">
   ${links}`;
 }

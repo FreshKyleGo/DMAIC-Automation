@@ -12,8 +12,8 @@
 }
 
 .wheel-slice.current {
-  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.45));
-  stroke: #000;
+  filter: drop-shadow(0 0 8px rgba(145, 193, 62, 0.65));
+  stroke: var(--color-brand-dark);
   stroke-width: 3;
 }
 
@@ -34,7 +34,9 @@
 .wheel-label {
   fill: #fff;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
   pointer-events: none;
   font-family: var(--font-sans);
 }

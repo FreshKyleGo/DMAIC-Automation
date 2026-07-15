@@ -1,5 +1,5 @@
-function formatUSD(amount) {
-  return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+function formatEUR(amount) {
+  return amount.toLocaleString('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
 }
 
 export function renderStatsBar(stats) {
@@ -17,7 +17,7 @@ export function renderStatsBar(stats) {
       <div class="label">In Progress</div>
     </div>
     <div class="stat-tile">
-      <div class="value">${formatUSD(stats.totalSavingsUSD)}</div>
+      <div class="value">${formatEUR(stats.totalSavingsEUR)}</div>
       <div class="label">Total Annual Savings</div>
     </div>
     <div class="stat-tile">
