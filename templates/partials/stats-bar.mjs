@@ -9,7 +9,7 @@ export function renderStatsBar(stats) {
       <div class="label">Total Projects</div>
     </div>
     <div class="stat-tile">
-      <div class="value">${stats.completedProjects}</div>
+      <div class="value value-positive">${stats.completedProjects}</div>
       <div class="label">Completed</div>
     </div>
     <div class="stat-tile">
@@ -17,7 +17,7 @@ export function renderStatsBar(stats) {
       <div class="label">In Progress</div>
     </div>
     <div class="stat-tile">
-      <div class="value">${formatEUR(stats.totalSavingsEUR)}</div>
+      <div class="value value-positive">${formatEUR(stats.totalSavingsEUR)}</div>
       <div class="label">Total Annual Savings</div>
     </div>
     <div class="stat-tile">

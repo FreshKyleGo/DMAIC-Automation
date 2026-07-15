@@ -1,3 +1,17 @@
+.wheel-crust {
+  fill: none;
+  stroke: #e8b878;
+  stroke-width: 16;
+  pointer-events: none;
+}
+
+.wheel-crust-edge {
+  fill: none;
+  stroke: #c9924a;
+  stroke-width: 2;
+  pointer-events: none;
+}
+
 .wheel-slice {
   cursor: pointer;
   stroke: var(--color-surface);

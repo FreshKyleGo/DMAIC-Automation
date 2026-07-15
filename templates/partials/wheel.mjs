@@ -13,10 +13,12 @@ function describeWedge(cx, cy, r, startAngle, endAngle) {
   return `M ${cx} ${cy} L ${start.x.toFixed(2)} ${start.y.toFixed(2)} A ${r} ${r} 0 ${largeArcFlag} 0 ${end.x.toFixed(2)} ${end.y.toFixed(2)} Z`;
 }
 
+const TOPPINGS_RADIUS = 124; // wedges sit inside the crust ring, like pizza toppings
+
 export const WEDGES = PHASES.map((phase, i) => ({
   phase,
   label: phase.charAt(0).toUpperCase() + phase.slice(1),
-  d: describeWedge(150, 150, 140, i * SLICE_ANGLE, (i + 1) * SLICE_ANGLE),
+  d: describeWedge(150, 150, TOPPINGS_RADIUS, i * SLICE_ANGLE, (i + 1) * SLICE_ANGLE),
   labelPos: polarToCartesian(150, 150, 95, i * SLICE_ANGLE + SLICE_ANGLE / 2)
 }));
 
@@ -44,6 +46,8 @@ export function renderWheel(project) {
   }).join('\n      ');
 
   return `<svg viewBox="0 0 300 300" class="dmaic-wheel" role="group" aria-label="DMAIC phase wheel">
+      <circle class="wheel-crust" cx="150" cy="150" r="132"></circle>
+      <circle class="wheel-crust-edge" cx="150" cy="150" r="140"></circle>
       ${paths}
       ${labels}
     </svg>`;

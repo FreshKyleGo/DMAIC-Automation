@@ -175,6 +175,10 @@ h1 { font-weight: 900; letter-spacing: -0.01em; }
   color: var(--color-text);
 }
 
+.stat-tile .value.value-positive {
+  color: var(--color-brand-olive);
+}
+
 .stat-tile .label {
   font-size: 0.7rem;
   color: var(--color-text-muted);
@@ -236,6 +240,7 @@ h1 { font-weight: 900; letter-spacing: -0.01em; }
   margin: 0.6rem 0 0.4rem;
   font-size: 1.05rem;
   font-weight: 800;
+  color: var(--color-brand-olive);
 }
 
 .project-card .meta {
@@ -271,6 +276,7 @@ h1 { font-weight: 900; letter-spacing: -0.01em; }
 /* Project profile page */
 .project-header h1 {
   margin-bottom: 0.25rem;
+  color: var(--color-brand-olive);
 }
 
 .project-header .meta-row {
@@ -311,9 +317,9 @@ h1 { font-weight: 900; letter-spacing: -0.01em; }
 }
 
 .phase-tab.active {
-  background: var(--color-brand-dark);
-  color: #fff;
-  border-color: var(--color-brand-dark);
+  background: var(--color-brand);
+  color: var(--color-brand-dark);
+  border-color: var(--color-brand);
 }
 
 .dmaic-wheel {
@@ -340,6 +346,7 @@ h1 { font-weight: 900; letter-spacing: -0.01em; }
 .phase-panel h2 {
   margin-top: 0;
   font-weight: 900;
+  color: var(--color-brand-olive);
 }
 
 .doc-links {
