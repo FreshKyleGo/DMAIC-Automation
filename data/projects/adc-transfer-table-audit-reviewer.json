@@ -1,0 +1,133 @@
+{
+  "id": "proj-2025-0042",
+  "slug": "adc-transfer-table-audit-reviewer",
+  "title": "ADC Transfer Table (Audit Reviewer)",
+  "sponsor": "Morgan Silva",
+  "owner": "Jordan Reyes",
+  "team": ["Casey Lin", "Drew Okafor"],
+  "businessUnit": "ADC Text Integration",
+  "status": "Completed",
+  "currentPhase": "Control",
+  "startDate": "2025-09-01",
+  "targetCompletionDate": "2025-11-04",
+  "actualCompletionDate": "2026-03-31",
+  "financialImpact": {
+    "type": "Soft Savings",
+    "currency": "EUR",
+    "notes": "Primary benefit is quality (100% transfer-error elimination) and 13.67 hours of annualized non-value-added review time saved; not separately monetized in this project."
+  },
+  "define": {
+    "processName": "Text Integration with Transfer Instruction",
+    "problemStatement": "The ADC post-integration review process for transferred sections is manual, time-consuming, and prone to oversight. From June 2025 to October 2025, 16 transfer-related errors were recorded out of 633 transferred sections, resulting in a 2.53% error rate. Key concerns include incorrect SNL in former credit lines, incorrect section numbers in transfer credit lines, and missing updates to transferred section content, which may cause rework and affect audit quality. Time and motion study data from 4 processor samples showed that manual review takes 0.70 minutes per section, equal to approximately 1,063.44 minutes or 17.72 hours annually based on 1,519.20 transferred sections per year.",
+    "goalStatement": "The goal of this project is to improve quality by eliminating transfer-related errors from 16 errors out of 633 transferred sections, or a 2.53% error rate, to 0 errors, or a 0% error rate. As a secondary benefit, the project will reduce non-value-added manual verification time by 77%, from 0.70 minutes per section to 0.16 minutes per section, resulting in an estimated 13.67 hours saved annually based on 1,519.20 transferred sections per year.",
+    "businessCase": "Transfer is executed when a section is moved from one location to another, or when a citation is renumbered. After text integration, processors must perform a post-integration review to confirm that transferred sections were executed correctly, including section content, transfer node content, CE records, credit lines, linking, and versioning. The current review process requires processors to manually open and check transferred sections one by one. This makes the process time-consuming and prone to oversight, especially when there are numerous transferred sections. This issue is important to address because transfer-related errors have already been observed. From June 2025 to October 2025, 16 transfer-related errors were recorded out of 633 transferred sections processed, including incorrect SNL in former credit lines, incorrect section numbers in transfer credit lines, and missing content updates. Manual post-integration review of transfers is a critical pain point in the text integration workflow because transfer accuracy affects section content, CE records, credit lines, linking, versioning, and audit quality. This project focuses on both quality improvement and time savings, with quality as the main priority. Employees will benefit from fewer repetitive checks and corrections, the business will benefit from improved product quality and time savings, and customers are expected to receive more accurate and reliable content.",
+    "expectedBenefits": [
+      "No transfer-related errors",
+      "Reduction in post-integration review time",
+      "Enhanced audit quality",
+      "Faster turnaround times",
+      "Eliminating the need for applying transfer-related corrections"
+    ],
+    "identifiedSolution": "Implement an AI chain that automatically analyzes the audit files and generates a disposition table tracking all section movements, information, and changes.",
+    "assumptions": [
+      "Eliminate transfer-related errors and manual post-integration review time spent"
+    ],
+    "dependencies": [
+      "Availability of transfer updates"
+    ],
+    "scope": {
+      "firstProcessStep": "Execute transfer text integration",
+      "lastProcessStep": "Generate and review the AI-produced disposition table.",
+      "inScope": ["Automation of TOC checking for transferred sections."],
+      "outOfScope": ["Other processes not related to transfers."]
+    },
+    "team": {
+      "sponsor": "Morgan Silva",
+      "blackBelt": "Jordan Reyes",
+      "processOwner": "Jordan Reyes",
+      "members": ["Casey Lin", "Drew Okafor"]
+    },
+    "sipoc": {
+      "suppliers": ["PAR Team"],
+      "inputs": ["Updates with transfer instructions loaded in Codes Workbench"],
+      "process": ["Integration of transfers and manually verifying relocated content, versioning, and linking"],
+      "outputs": ["Accurate transfer data"],
+      "customers": ["ADC Processors and Manila AE"]
+    },
+    "voc": []
+  },
+  "measure": {
+    "dataCollectionPlan": [
+      { "metric": "Manual review time per section", "operationalDefinition": "Time and motion study: minutes to review one transferred section", "dataSource": "Time and motion study (processor samples)", "sampleSize": 4, "collectionPeriod": "June 2025 - October 2025" },
+      { "metric": "Transfer-related error rate", "operationalDefinition": "Transfer-related errors divided by transferred sections processed, tracked monthly", "dataSource": "Monthly transfer error log", "sampleSize": 633, "collectionPeriod": "June 2025 - October 2025" }
+    ],
+    "baselineMetrics": [
+      { "metric": "Transfer error rate", "baselineValue": 2.53, "unit": "%" },
+      { "metric": "Manual review time per section", "baselineValue": 0.70, "unit": "minutes" },
+      { "metric": "Annualized review time", "baselineValue": 17.72, "unit": "hours" }
+    ],
+    "notes": "Baseline period: June 2025 - October 2025 (633 transferred sections, 16 transfer-related errors)."
+  },
+  "analyze": {
+    "rootCauseAnalysis": {
+      "fishbone": { "categories": [] },
+      "fiveWhys": [
+        {
+          "problem": "The post-integration review process for transferred sections is manual, time-consuming, and prone to oversight. From June 2025 to October 2025, 16 transfer-related errors were recorded out of 633 transferred sections, resulting in a 2.53% error rate. Manual review takes 0.70 minutes per section, or approximately 17.72 hours annually based on 1,519.20 transferred sections per year.",
+          "whys": [
+            { "why": "Why is the post-integration review process for transferred sections manual, time-consuming, and prone to oversight?", "because": "Because processors need to manually open and check transferred sections one by one." },
+            { "why": "Why do processors need to manually open and check transferred sections one by one?", "because": "Because it is the existing process and there are no opportunities to explore streamlining. The section movements, content updates, CE records, credit lines, linking, and versioning must be manually verified after text integration." },
+            { "why": "Why is there no opportunities to streamline it before?", "because": "Because there were no automation opportunities considered in the past." }
+          ],
+          "actions": [
+            "To identify an automated solution to replace the manual process. This solution is in the form of implementing an AI chain to automate the post-integration review process that automatically verifies transferred sections, CE records, and credit lines. This will reduce manual checking, minimize errors, and eliminate the need for correction audits."
+          ]
+        }
+      ]
+    },
+    "pareto": [
+      { "category": "Missed content update to transferred sections", "count": 15 },
+      { "category": "Incorrect former SNL in transfer credit line", "count": 1 }
+    ],
+    "findings": "The majority of transfer-related errors (15 of 16, 93.75%) stemmed from missed content updates to transferred sections rather than credit-line SNL mismatches, pointing to a content-verification gap as the primary driver."
+  },
+  "improve": {
+    "solutions": [
+      { "description": "Implement an AI chain (Open Arena Chain) that automatically analyzes audit files and generates a disposition table tracking all section movements, credit lines, CE records, linking, and versioning.", "owner": "Jordan Reyes", "implementationDate": "2025-11-01" }
+    ],
+    "implementationChecklist": [
+      { "actionItem": "Create the AI chain for transferred section review.", "stakeholderCommsDone": true, "trainingDone": false, "budgetPlanningDone": false, "detailedPlanDone": true, "hasAnticipatedRisk": false, "riskRemarks": "" },
+      { "actionItem": "Test the AI chain using sample audit files.", "stakeholderCommsDone": true, "trainingDone": false, "budgetPlanningDone": false, "detailedPlanDone": true, "hasAnticipatedRisk": true, "riskRemarks": "AI output may be inaccurate or may miss transferred sections." },
+      { "actionItem": "Update the AI chain based on test results.", "stakeholderCommsDone": true, "trainingDone": false, "budgetPlanningDone": false, "detailedPlanDone": true, "hasAnticipatedRisk": false, "riskRemarks": "" },
+      { "actionItem": "Share instructions with processors on how to use the AI chain.", "stakeholderCommsDone": true, "trainingDone": true, "budgetPlanningDone": false, "detailedPlanDone": true, "hasAnticipatedRisk": true, "riskRemarks": "Processors may not clearly understand the AI-generated output." },
+      { "actionItem": "Use the AI-generated disposition table in actual post-integration review.", "stakeholderCommsDone": true, "trainingDone": true, "budgetPlanningDone": false, "detailedPlanDone": true, "hasAnticipatedRisk": true, "riskRemarks": "AI chain may not be consistently used." },
+      { "actionItem": "Monitor transfer-related error count and review time after implementation.", "stakeholderCommsDone": true, "trainingDone": true, "budgetPlanningDone": false, "detailedPlanDone": true, "hasAnticipatedRisk": false, "riskRemarks": "" }
+    ],
+    "pilotResults": {
+      "pilotPeriod": "November 2025 - March 2026 (post-process improvement validation)",
+      "summary": "Post-process accuracy validation of the Open Arena Chain reviewed 160 sections with 160 accurate records and 0 errors captured (100% accuracy, 0% error rate), confirming the AI chain reliably replaces manual review."
+    }
+  },
+  "control": {
+    "controlPlan": [
+      { "metric": "Transfer-related error count and disposition table accuracy", "target": "0 transfer-related errors", "frequency": "Monthly", "owner": "Jordan Reyes", "responseIfOutOfControl": "Compare the AI-generated disposition table with the audit file, manually check, and update the AI chain prompt if the issue repeats." }
+    ],
+    "riskMitigation": [
+      { "risk": "AI output may be inaccurate or may miss transferred sections.", "frequency": "As needed", "responsibility": "Jordan Reyes", "reactionPlan": "Compare the AI-generated disposition table with the audit file. Manually check the audit file and update the AI chain prompt if the issue repeats.", "result": "Incorrect or incomplete AI output is corrected before review completion." },
+      { "risk": "Processors may not clearly understand the AI-generated output.", "frequency": "As needed", "responsibility": "Jordan Reyes", "reactionPlan": "Re-demonstrate how to use the AI chain and update the instructions or provide recording if needed.", "result": "Processors can correctly interpret and use the AI-generated disposition table." },
+      { "risk": "AI chain may not be consistently used.", "frequency": "As needed", "responsibility": "Jurisdiction Lead", "reactionPlan": "Remind processors to use the AI chain when transfer updates are available. Communicate the AI chain as part of the standard review process.", "result": "AI chain usage is reinforced and the review process remains consistent." }
+    ],
+    "monitoringMetrics": ["Transfer-related error count", "Transfer error rate", "Disposition table accuracy rate"],
+    "standardWorkDocs": [],
+    "finalResults": {
+      "summary": "Post-implementation validation (Nov 2025 - Mar 2026) showed 0 transfer-related errors out of 160 sections processed (0% error rate), down from a 2.53% baseline error rate — a 100% relative error reduction. The Open Arena Chain validation review found 160 of 160 sections accurate (100% accuracy).",
+      "keyMetricsAfter": [
+        { "metric": "Transfer error rate", "value": 0, "unit": "%" },
+        { "metric": "Manual review time per section", "value": 0.16, "unit": "minutes" },
+        { "metric": "Annualized review time", "value": 4.05, "unit": "hours" }
+      ]
+    }
+  },
+  "createdAt": "2025-09-01T09:00:00Z",
+  "updatedAt": "2026-03-31T09:00:00Z"
+}

@@ -73,11 +73,35 @@
 
       <fieldset>
         <legend>Define — Charter</legend>
+        <label>Process Name<input name="processName" placeholder="Name of the business process being improved"></label>
+        <label>Process Owner (Team)<input name="processOwnerGroup" placeholder="e.g. ADC Processors"></label>
+        <label>Mentor<input name="mentor"></label>
         <label>Problem Statement <span class="req">*</span><textarea name="problemStatement" rows="3" required></textarea></label>
         <label>Goal Statement <span class="req">*</span><textarea name="goalStatement" rows="3" required></textarea></label>
         <label>Business Case<textarea name="businessCase" rows="3"></textarea></label>
+        <label>Expected Benefits (one per line)<textarea name="expectedBenefits" rows="3"></textarea></label>
+        <label>Identified Solution<textarea name="identifiedSolution" rows="2"></textarea></label>
+        <label>Added Benefit<input name="addedBenefit" placeholder="e.g. 23 Hours Time Savings or 0.015 FTE Savings"></label>
+        <label>1st Process Step<input name="firstProcessStep"></label>
+        <label>Last Process Step<input name="lastProcessStep"></label>
         <label>In Scope (one per line)<textarea name="inScope" rows="3"></textarea></label>
         <label>Out of Scope (one per line)<textarea name="outOfScope" rows="3"></textarea></label>
+        <label>Assumptions (one per line)<textarea name="assumptions" rows="3"></textarea></label>
+        <label>Dependencies (one per line)<textarea name="dependencies" rows="3"></textarea></label>
+
+        <h3>Risks (anticipated at kickoff)</h3>
+        <div class="repeat-container" data-repeat="defineRisks" data-fields="risk,mitigation">
+          <div class="repeat-rows"></div>
+          <template>
+            <div class="repeat-row">
+              <input data-field="risk" placeholder="Risk">
+              <input data-field="mitigation" placeholder="Mitigation">
+              <button type="button" class="remove-row">Remove</button>
+            </div>
+          </template>
+          <button type="button" class="add-row" data-repeat="defineRisks">+ Add row</button>
+        </div>
+
         <label>Black Belt / Facilitator<input name="teamBlackBelt"></label>
         <label>Process Owner<input name="teamProcessOwner"></label>
 
@@ -140,6 +164,32 @@
         <label>Process Sigma<input type="number" step="any" name="processSigma"></label>
         <label>Cpk<input type="number" step="any" name="cpk"></label>
         <label>Measure Notes<textarea name="measureNotes" rows="2"></textarea></label>
+
+        <h3>Value Stream Map</h3>
+        <label>Time Unit
+          <select name="vsmTimeUnit">
+            <option value="hours">Hours</option>
+            <option value="minutes">Minutes</option>
+          </select>
+        </label>
+        <div class="repeat-container" data-repeat="valueStreamMap" data-fields="step,stepLabel,vaTime,envaNvaTime,waitTime">
+          <div class="repeat-rows"></div>
+          <template>
+            <div class="repeat-row">
+              <input data-field="step" placeholder="Process Step">
+              <select data-field="stepLabel">
+                <option value="VA">VA</option>
+                <option value="ENVA">ENVA</option>
+                <option value="NVA">NVA</option>
+              </select>
+              <input data-field="vaTime" type="number" step="any" placeholder="VA Time">
+              <input data-field="envaNvaTime" type="number" step="any" placeholder="ENVA/NVA Time">
+              <input data-field="waitTime" type="number" step="any" placeholder="Wait Time">
+              <button type="button" class="remove-row">Remove</button>
+            </div>
+          </template>
+          <button type="button" class="add-row" data-repeat="valueStreamMap">+ Add row</button>
+        </div>
       </fieldset>
 
       <fieldset>
@@ -154,7 +204,19 @@
 
         <h3>Five Whys</h3>
         <label>Problem<input name="fiveWhysProblem"></label>
-        <label>Whys (one per line, up to 5)<textarea name="fiveWhysList" rows="5"></textarea></label>
+        <div class="repeat-container" data-repeat="fiveWhysSteps" data-fields="why,because">
+          <div class="repeat-rows"></div>
+          <template>
+            <div class="repeat-row">
+              <input data-field="why" placeholder="Why?">
+              <input data-field="because" placeholder="Because...">
+              <button type="button" class="remove-row">Remove</button>
+            </div>
+          </template>
+          <button type="button" class="add-row" data-repeat="fiveWhysSteps">+ Add Why</button>
+        </div>
+        <label>Root Cause (optional — if not just the last "because")<textarea name="fiveWhysRootCause" rows="2"></textarea></label>
+        <label>Action Items (one per line)<textarea name="fiveWhysActions" rows="3"></textarea></label>
 
         <h3>Pareto of Causes</h3>
         <div class="repeat-container" data-repeat="pareto" data-fields="category,count">
@@ -188,6 +250,24 @@
           <button type="button" class="add-row" data-repeat="solutions">+ Add row</button>
         </div>
 
+        <h3>Implementation Checklist (change management)</h3>
+        <div class="repeat-container" data-repeat="implementationChecklist" data-fields="actionItem,stakeholderCommsDone,trainingDone,budgetPlanningDone,detailedPlanDone,hasAnticipatedRisk,riskRemarks">
+          <div class="repeat-rows"></div>
+          <template>
+            <div class="repeat-row checklist-row">
+              <input data-field="actionItem" placeholder="Action Item">
+              <label class="checkbox-label"><input data-field="stakeholderCommsDone" type="checkbox"> Comms done</label>
+              <label class="checkbox-label"><input data-field="trainingDone" type="checkbox"> Training done</label>
+              <label class="checkbox-label"><input data-field="budgetPlanningDone" type="checkbox"> Budget planned</label>
+              <label class="checkbox-label"><input data-field="detailedPlanDone" type="checkbox"> Detailed plan done</label>
+              <label class="checkbox-label"><input data-field="hasAnticipatedRisk" type="checkbox"> Risk anticipated</label>
+              <input data-field="riskRemarks" placeholder="Risk Remarks">
+              <button type="button" class="remove-row">Remove</button>
+            </div>
+          </template>
+          <button type="button" class="add-row" data-repeat="implementationChecklist">+ Add row</button>
+        </div>
+
         <label>Pilot Period<input name="pilotPeriod" placeholder="e.g. 2026-06-01 to 2026-06-30"></label>
         <label>Pilot Results Summary<textarea name="pilotSummary" rows="2"></textarea></label>
       </fieldset>
@@ -210,6 +290,22 @@
           <button type="button" class="add-row" data-repeat="controlPlan">+ Add row</button>
         </div>
 
+        <h3>Risk & Mitigation (sustaining the gain)</h3>
+        <div class="repeat-container" data-repeat="riskMitigation" data-fields="risk,frequency,responsibility,reactionPlan,result">
+          <div class="repeat-rows"></div>
+          <template>
+            <div class="repeat-row">
+              <input data-field="risk" placeholder="Risk">
+              <input data-field="frequency" placeholder="Frequency (e.g. As needed)">
+              <input data-field="responsibility" placeholder="Responsibility">
+              <input data-field="reactionPlan" placeholder="Reaction Plan">
+              <input data-field="result" placeholder="Result (optional)">
+              <button type="button" class="remove-row">Remove</button>
+            </div>
+          </template>
+          <button type="button" class="add-row" data-repeat="riskMitigation">+ Add row</button>
+        </div>
+
         <label>Monitoring Metrics (one per line)<textarea name="monitoringMetrics" rows="3"></textarea></label>
 
         <h3>Standard Work Documents</h3>
@@ -228,6 +324,20 @@
         <label>Final Results Summary<textarea name="finalResultsSummary" rows="2"></textarea></label>
         <label>Actual Annualized Savings (EUR)<input type="number" step="1" name="actualAnnualizedSavings"></label>
         <label>Cycle Time After (days)<input type="number" step="any" name="cycleTimeAfter"></label>
+
+        <h3>Key Metrics After (pairs with Measure &rarr; Baseline Metrics by name)</h3>
+        <div class="repeat-container" data-repeat="keyMetricsAfter" data-fields="metric,value,unit">
+          <div class="repeat-rows"></div>
+          <template>
+            <div class="repeat-row">
+              <input data-field="metric" placeholder="Metric (match a Baseline Metric name)">
+              <input data-field="value" type="number" step="any" placeholder="Value">
+              <input data-field="unit" placeholder="Unit">
+              <button type="button" class="remove-row">Remove</button>
+            </div>
+          </template>
+          <button type="button" class="add-row" data-repeat="keyMetricsAfter">+ Add row</button>
+        </div>
       </fieldset>
 
       <button type="submit" class="submit-button">Generate Project File</button>

@@ -72,6 +72,30 @@ form textarea:focus {
   margin-top: 0;
 }
 
+form input[type="checkbox"] {
+  display: inline-block;
+  width: auto;
+  margin-top: 0;
+  padding: 0;
+  border: none;
+  background: none;
+}
+
+.repeat-row.checklist-row {
+  grid-template-columns: 1.5fr repeat(5, auto) 1.2fr auto;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
 .add-row,
 .remove-row {
   padding: 0.4rem 0.9rem;

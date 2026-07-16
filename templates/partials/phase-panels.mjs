@@ -1,8 +1,14 @@
 import { escapeHtml, escapeMultiline } from '../../scripts/lib/html-escape.mjs';
+import { computeValueStreamTotals } from '../../scripts/lib/render-calcs.mjs';
 
 function list(items) {
   if (!items || !items.length) return '<p class="meta">None recorded.</p>';
   return `<ul>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ul>`;
+}
+
+function orderedList(items) {
+  if (!items || !items.length) return '<p class="meta">None recorded.</p>';
+  return `<ol>${items.map((item) => `<li>${escapeHtml(item)}</li>`).join('')}</ol>`;
 }
 
 function table(headers, rows) {
@@ -19,18 +25,46 @@ export function renderDefineContent(project) {
   const sipoc = d.sipoc || {};
   const team = d.team || {};
   const scope = d.scope || {};
+  const risks = d.risks || [];
 
   return `<h2>Define — Project Charter</h2>
+    ${d.processName ? `<p><strong>Process:</strong> ${escapeHtml(d.processName)}</p>` : ''}
+    ${d.processOwnerGroup ? `<p><strong>Process Owner (Team):</strong> ${escapeHtml(d.processOwnerGroup)}</p>` : ''}
+    ${d.mentor ? `<p><strong>Mentor:</strong> ${escapeHtml(d.mentor)}</p>` : ''}
     <h3>Problem Statement</h3>
     <p>${escapeMultiline(d.problemStatement)}</p>
     <h3>Goal Statement</h3>
     <p>${escapeMultiline(d.goalStatement)}</p>
     ${d.businessCase ? `<h3>Business Case</h3><p>${escapeMultiline(d.businessCase)}</p>` : ''}
+    ${
+      d.expectedBenefits && d.expectedBenefits.length
+        ? `<h3>Expected Benefits</h3>${orderedList(d.expectedBenefits)}`
+        : ''
+    }
+    ${d.identifiedSolution ? `<h3>Identified Solution</h3><p>${escapeMultiline(d.identifiedSolution)}</p>` : ''}
+    ${d.addedBenefit ? `<h3>Added Benefit</h3><p>${escapeHtml(d.addedBenefit)}</p>` : ''}
     <h3>Scope</h3>
+    ${
+      scope.firstProcessStep || scope.lastProcessStep
+        ? `<p>${scope.firstProcessStep ? `<strong>1st Process Step:</strong> ${escapeHtml(scope.firstProcessStep)}<br>` : ''}${
+            scope.lastProcessStep ? `<strong>Last Process Step:</strong> ${escapeHtml(scope.lastProcessStep)}` : ''
+          }</p>`
+        : ''
+    }
     <p><strong>In scope:</strong></p>
     ${list(scope.inScope)}
     <p><strong>Out of scope:</strong></p>
     ${list(scope.outOfScope)}
+    ${d.assumptions && d.assumptions.length ? `<h3>Assumptions</h3>${orderedList(d.assumptions)}` : ''}
+    ${d.dependencies && d.dependencies.length ? `<h3>Dependencies</h3>${orderedList(d.dependencies)}` : ''}
+    ${
+      risks.length
+        ? `<h3>Risks</h3>${table(
+            ['Risk', 'Mitigation'],
+            risks.map((r) => [r.risk, r.mitigation])
+          )}`
+        : ''
+    }
     <h3>Team</h3>
     <p>Sponsor: ${escapeHtml(team.sponsor)}<br>
     Black Belt / Lead: ${escapeHtml(team.blackBelt)}<br>
@@ -61,6 +95,11 @@ function buildSipocRows(sipoc) {
 
 export function renderMeasureContent(project) {
   const m = project.measure || {};
+  const vsm = m.valueStreamMap || {};
+  const steps = vsm.steps || [];
+  const unit = vsm.timeUnit || 'hours';
+  const totals = computeValueStreamTotals(steps);
+
   return `<h2>Measure — Data & Baseline</h2>
     <h3>Data Collection Plan</h3>
     ${table(
@@ -73,7 +112,36 @@ export function renderMeasureContent(project) {
       (m.baselineMetrics || []).map((b) => [b.metric, b.baselineValue, b.unit])
     )}
     <p><strong>Process Sigma:</strong> ${m.processSigma ?? '—'} &nbsp; <strong>Cpk:</strong> ${m.cpk ?? '—'}</p>
+    ${
+      steps.length
+        ? `<h3>Value Stream Map</h3>
+    ${table(
+      ['Step', 'Label', `VA (${unit})`, `ENVA/NVA (${unit})`, `Wait (${unit})`],
+      steps.map((s) => [s.step, s.stepLabel, s.vaTime, s.envaNvaTime, s.waitTime])
+    )}
+    <p>
+      <strong>Total VA:</strong> ${totals.totalVaTime.toFixed(2)} ${escapeHtml(unit)} (${totals.vaPct.toFixed(1)}%)<br>
+      <strong>Total ENVA/NVA:</strong> ${totals.totalEnvaNvaTime.toFixed(2)} ${escapeHtml(unit)} (${totals.envaNvaPct.toFixed(1)}%)<br>
+      <strong>Total Wait:</strong> ${totals.totalWaitTime.toFixed(2)} ${escapeHtml(unit)} (${totals.waitPct.toFixed(1)}%)<br>
+      <strong>Total Lead Time:</strong> ${totals.totalLeadTime.toFixed(2)} ${escapeHtml(unit)}
+    </p>`
+        : ''
+    }
     ${m.notes ? `<h3>Notes</h3><p>${escapeMultiline(m.notes)}</p>` : ''}`;
+}
+
+function normalizeWhy(w) {
+  return typeof w === 'string' ? { why: w, because: '' } : w || {};
+}
+
+function renderFiveWhysEntry(fw) {
+  const whys = (fw.whys || []).map(normalizeWhy);
+  const whyRows = whys.map((w, i) => [`Why ${i + 1}`, w.why, w.because]);
+
+  return `<p><strong>Problem:</strong> ${escapeHtml(fw.problem)}</p>
+    ${table(['#', 'Why?', 'Because'], whyRows)}
+    ${fw.rootCause ? `<p><strong>Root Cause:</strong> ${escapeMultiline(fw.rootCause)}</p>` : ''}
+    ${fw.actions && fw.actions.length ? `<p><strong>Action:</strong></p>${orderedList(fw.actions)}` : ''}`;
 }
 
 export function renderAnalyzeContent(project) {
@@ -89,11 +157,7 @@ export function renderAnalyzeContent(project) {
     : '<p class="meta">None recorded.</p>';
 
   const fiveWhysHtml = fiveWhys.length
-    ? fiveWhys
-        .map(
-          (fw) => `<p><strong>Problem:</strong> ${escapeHtml(fw.problem)}</p>${list(fw.whys)}`
-        )
-        .join('')
+    ? fiveWhys.map(renderFiveWhysEntry).join('')
     : '<p class="meta">None recorded.</p>';
 
   return `<h2>Analyze — Root Cause</h2>
@@ -112,6 +176,9 @@ export function renderAnalyzeContent(project) {
 export function renderImproveContent(project) {
   const im = project.improve || {};
   const pilot = im.pilotResults || {};
+  const checklist = im.implementationChecklist || [];
+
+  const yn = (v) => (v === true ? 'Yes' : v === false ? 'No' : '—');
 
   return `<h2>Improve — Solutions & Pilot</h2>
     <h3>Solutions Implemented</h3>
@@ -119,6 +186,23 @@ export function renderImproveContent(project) {
       ['Description', 'Owner', 'Implementation Date'],
       (im.solutions || []).map((s) => [s.description, s.owner, s.implementationDate])
     )}
+    ${
+      checklist.length
+        ? `<h3>Implementation Checklist</h3>
+    ${table(
+      ['Action Item', 'Stakeholder Comms', 'Training', 'Budget Planning', 'Detailed Plan', 'Risk Anticipated?', 'Risk Remarks'],
+      checklist.map((c) => [
+        c.actionItem,
+        yn(c.stakeholderCommsDone),
+        yn(c.trainingDone),
+        yn(c.budgetPlanningDone),
+        yn(c.detailedPlanDone),
+        yn(c.hasAnticipatedRisk),
+        c.riskRemarks
+      ])
+    )}`
+        : ''
+    }
     ${pilot.pilotPeriod ? `<h3>Pilot Results</h3><p><strong>Period:</strong> ${escapeHtml(pilot.pilotPeriod)}</p>` : ''}
     ${pilot.summary ? `<p>${escapeMultiline(pilot.summary)}</p>` : ''}`;
 }
@@ -126,6 +210,8 @@ export function renderImproveContent(project) {
 export function renderControlContent(project) {
   const c = project.control || {};
   const final = c.finalResults || {};
+  const riskMitigation = c.riskMitigation || [];
+  const keyMetricsAfter = final.keyMetricsAfter || [];
 
   return `<h2>Control — Sustaining the Gain</h2>
     <h3>Control Plan</h3>
@@ -133,6 +219,15 @@ export function renderControlContent(project) {
       ['Metric', 'Target', 'Frequency', 'Owner', 'Response if Out of Control'],
       (c.controlPlan || []).map((p) => [p.metric, p.target, p.frequency, p.owner, p.responseIfOutOfControl])
     )}
+    ${
+      riskMitigation.length
+        ? `<h3>Risk & Mitigation</h3>
+    ${table(
+      ['Risk', 'Frequency', 'Responsibility', 'Reaction Plan', 'Result'],
+      riskMitigation.map((r) => [r.risk, r.frequency, r.responsibility, r.reactionPlan, r.result])
+    )}`
+        : ''
+    }
     <h3>Monitoring Metrics</h3>
     ${list(c.monitoringMetrics)}
     <h3>Standard Work Documents</h3>
@@ -151,6 +246,14 @@ export function renderControlContent(project) {
                ? `<strong>Annualized savings:</strong> €${final.actualAnnualizedSavings.toLocaleString('en-US')}<br>`
                : ''
            }${typeof final.cycleTimeAfter === 'number' ? `<strong>Cycle time after:</strong> ${final.cycleTimeAfter} days` : ''}</p>`
+        : ''
+    }
+    ${
+      keyMetricsAfter.length
+        ? `<h3>Key Metrics After</h3>${table(
+            ['Metric', 'Value', 'Unit'],
+            keyMetricsAfter.map((k) => [k.metric, k.value, k.unit])
+          )}`
         : ''
     }`;
 }

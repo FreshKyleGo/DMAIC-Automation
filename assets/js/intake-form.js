@@ -49,6 +49,10 @@ function collectRepeatRows(form, repeatKey) {
     for (const field of fields) {
       const input = rowEl.querySelector(`[data-field="${field}"]`);
       if (!input) continue;
+      if (input.type === 'checkbox') {
+        row[field] = input.checked;
+        continue;
+      }
       const raw = input.value.trim();
       if (raw) hasValue = true;
       row[field] = input.type === 'number' ? num(raw) : raw;
@@ -85,10 +89,21 @@ function buildProjectObject(form) {
       notes: get('financialImpactNotes') || undefined
     },
     define: {
+      processName: get('processName') || undefined,
+      processOwnerGroup: get('processOwnerGroup') || undefined,
+      mentor: get('mentor') || undefined,
       problemStatement: get('problemStatement'),
       goalStatement: get('goalStatement'),
       businessCase: get('businessCase') || undefined,
+      expectedBenefits: linesToArray(get('expectedBenefits')),
+      identifiedSolution: get('identifiedSolution') || undefined,
+      addedBenefit: get('addedBenefit') || undefined,
+      assumptions: linesToArray(get('assumptions')),
+      dependencies: linesToArray(get('dependencies')),
+      risks: collectRepeatRows(form, 'defineRisks'),
       scope: {
+        firstProcessStep: get('firstProcessStep') || undefined,
+        lastProcessStep: get('lastProcessStep') || undefined,
         inScope: linesToArray(get('inScope')),
         outOfScope: linesToArray(get('outOfScope'))
       },
@@ -110,6 +125,10 @@ function buildProjectObject(form) {
     measure: {
       dataCollectionPlan: collectRepeatRows(form, 'dataCollectionPlan'),
       baselineMetrics: collectRepeatRows(form, 'baselineMetrics'),
+      valueStreamMap: {
+        timeUnit: get('vsmTimeUnit') || 'hours',
+        steps: collectRepeatRows(form, 'valueStreamMap')
+      },
       processSigma: num(get('processSigma')),
       cpk: num(get('cpk')),
       notes: get('measureNotes') || undefined
@@ -127,7 +146,14 @@ function buildProjectObject(form) {
           ]
         },
         fiveWhys: get('fiveWhysProblem')
-          ? [{ problem: get('fiveWhysProblem'), whys: linesToArray(get('fiveWhysList')).slice(0, 5) }]
+          ? [
+              {
+                problem: get('fiveWhysProblem'),
+                whys: collectRepeatRows(form, 'fiveWhysSteps'),
+                rootCause: get('fiveWhysRootCause') || undefined,
+                actions: linesToArray(get('fiveWhysActions'))
+              }
+            ]
           : []
       },
       pareto: collectRepeatRows(form, 'pareto'),
@@ -135,6 +161,7 @@ function buildProjectObject(form) {
     },
     improve: {
       solutions: collectRepeatRows(form, 'solutions'),
+      implementationChecklist: collectRepeatRows(form, 'implementationChecklist'),
       pilotResults: {
         pilotPeriod: get('pilotPeriod') || undefined,
         summary: get('pilotSummary') || undefined
@@ -142,12 +169,14 @@ function buildProjectObject(form) {
     },
     control: {
       controlPlan: collectRepeatRows(form, 'controlPlan'),
+      riskMitigation: collectRepeatRows(form, 'riskMitigation'),
       monitoringMetrics: linesToArray(get('monitoringMetrics')),
       standardWorkDocs: collectRepeatRows(form, 'standardWorkDocs'),
       finalResults: {
         summary: get('finalResultsSummary') || undefined,
         actualAnnualizedSavings: num(get('actualAnnualizedSavings')),
-        cycleTimeAfter: num(get('cycleTimeAfter'))
+        cycleTimeAfter: num(get('cycleTimeAfter')),
+        keyMetricsAfter: collectRepeatRows(form, 'keyMetricsAfter')
       }
     },
     createdAt: now,

@@ -31,16 +31,37 @@
       "description": "Charter, SIPOC, and Voice of Customer",
       "required": ["problemStatement", "goalStatement"],
       "properties": {
+        "processName": { "type": "string", "description": "Name of the business process being improved, distinct from the project title" },
+        "processOwnerGroup": { "type": "string", "description": "The business team/group that owns the process (e.g. 'ADC Processors'), distinct from team.processOwner (an individual project team contact)" },
+        "mentor": { "type": "string", "description": "Six Sigma mentor/coach assigned to guide the project" },
         "problemStatement": { "type": "string" },
         "goalStatement": { "type": "string" },
         "scope": {
           "type": "object",
           "properties": {
+            "firstProcessStep": { "type": "string", "description": "Name of the first process step in scope" },
+            "lastProcessStep": { "type": "string", "description": "Name of the last process step in scope" },
             "inScope": { "type": "array", "items": { "type": "string" } },
             "outOfScope": { "type": "array", "items": { "type": "string" } }
           }
         },
         "businessCase": { "type": "string" },
+        "expectedBenefits": { "type": "array", "items": { "type": "string" }, "description": "Specific expected benefit statements, e.g. cycle time, throughput, TAT" },
+        "identifiedSolution": { "type": "string", "description": "Solution proposed at Charter stage, independent of improve.solutions (which tracks what was actually implemented)" },
+        "addedBenefit": { "type": "string", "description": "Short highlighted quantified benefit, e.g. '23 Hours Time Savings or 0.015 FTE Savings'" },
+        "assumptions": { "type": "array", "items": { "type": "string" } },
+        "dependencies": { "type": "array", "items": { "type": "string" } },
+        "risks": {
+          "type": "array",
+          "description": "Risks anticipated at kickoff/scoping, distinct from control.riskMitigation (sustaining-the-gain risk tracking)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "risk": { "type": "string" },
+              "mitigation": { "type": "string" }
+            }
+          }
+        },
         "team": {
           "type": "object",
           "properties": {
@@ -75,7 +96,7 @@
     },
     "measure": {
       "type": "object",
-      "description": "Data collection plan and baseline metrics",
+      "description": "Data collection plan, baseline metrics, and value stream map",
       "properties": {
         "dataCollectionPlan": {
           "type": "array",
@@ -98,6 +119,26 @@
               "metric": { "type": "string" },
               "baselineValue": { "type": "number" },
               "unit": { "type": "string" }
+            }
+          }
+        },
+        "valueStreamMap": {
+          "type": "object",
+          "description": "Lean VA/NVA/ENVA time-value analysis; totals/percentages are computed at render time, not stored",
+          "properties": {
+            "timeUnit": { "type": "string", "description": "e.g. 'hours' or 'minutes' — unit used consistently across all step times in this map" },
+            "steps": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "step": { "type": "string" },
+                  "stepLabel": { "type": "string", "enum": ["VA", "NVA", "ENVA"] },
+                  "vaTime": { "type": "number" },
+                  "envaNvaTime": { "type": "number" },
+                  "waitTime": { "type": "number" }
+                }
+              }
             }
           }
         },
@@ -130,11 +171,23 @@
             },
             "fiveWhys": {
               "type": "array",
+              "description": "One entry per why-chain. whys is variable-length (observed 3-5 levels in practice, not a fixed 5) — stop once the root cause is reached.",
               "items": {
                 "type": "object",
                 "properties": {
                   "problem": { "type": "string" },
-                  "whys": { "type": "array", "items": { "type": "string" }, "maxItems": 5 }
+                  "whys": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "why": { "type": "string" },
+                        "because": { "type": "string" }
+                      }
+                    }
+                  },
+                  "rootCause": { "type": "string", "description": "Optional — sometimes the root cause is just the last 'because' answer and isn't restated separately" },
+                  "actions": { "type": "array", "items": { "type": "string" } }
                 }
               }
             }
@@ -155,7 +208,7 @@
     },
     "improve": {
       "type": "object",
-      "description": "Solutions implemented and pilot results",
+      "description": "Solutions implemented, pilot results, and implementation/change-management checklist",
       "properties": {
         "solutions": {
           "type": "array",
@@ -165,6 +218,22 @@
               "description": { "type": "string" },
               "owner": { "type": "string" },
               "implementationDate": { "type": "string", "format": "date" }
+            }
+          }
+        },
+        "implementationChecklist": {
+          "type": "array",
+          "description": "Mini change-management plan per solution action item",
+          "items": {
+            "type": "object",
+            "properties": {
+              "actionItem": { "type": "string" },
+              "stakeholderCommsDone": { "type": "boolean" },
+              "trainingDone": { "type": "boolean" },
+              "budgetPlanningDone": { "type": "boolean" },
+              "detailedPlanDone": { "type": "boolean" },
+              "hasAnticipatedRisk": { "type": "boolean" },
+              "riskRemarks": { "type": "string" }
             }
           }
         },
@@ -181,7 +250,7 @@
     },
     "control": {
       "type": "object",
-      "description": "Control plan and final results",
+      "description": "Control plan, risk/mitigation to sustain the gain, and final results",
       "properties": {
         "controlPlan": {
           "type": "array",
@@ -193,6 +262,20 @@
               "frequency": { "type": "string" },
               "owner": { "type": "string" },
               "responseIfOutOfControl": { "type": "string" }
+            }
+          }
+        },
+        "riskMitigation": {
+          "type": "array",
+          "description": "Control-phase risk tracking to sustain the gain post-implementation, distinct from define.risks (anticipated at kickoff)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "risk": { "type": "string" },
+              "frequency": { "type": "string", "description": "How often this risk is checked, e.g. 'As needed', 'Monthly'" },
+              "responsibility": { "type": "string", "description": "Person/role responsible for reacting to this risk" },
+              "reactionPlan": { "type": "string", "description": "What to do if the risk occurs" },
+              "result": { "type": "string", "description": "Optional — observed outcome when using the implemented solution" }
             }
           }
         },
@@ -212,7 +295,19 @@
           "properties": {
             "summary": { "type": "string" },
             "actualAnnualizedSavings": { "type": "number" },
-            "cycleTimeAfter": { "type": "number" }
+            "cycleTimeAfter": { "type": "number" },
+            "keyMetricsAfter": {
+              "type": "array",
+              "description": "Generalized before/after metric comparison — pair with measure.baselineMetrics by matching 'metric' name",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "metric": { "type": "string" },
+                  "value": { "type": "number" },
+                  "unit": { "type": "string" }
+                }
+              }
+            }
           }
         }
       }
