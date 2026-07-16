@@ -1,0 +1,147 @@
+{
+  "id": "proj-2025-0018",
+  "slug": "filename-update-tool",
+  "title": "Filename Update Tool",
+  "sponsor": "Riley Chen",
+  "owner": "Kyle Go",
+  "team": ["Jordan Reyes"],
+  "businessUnit": "ADC Text Integration",
+  "status": "Completed",
+  "currentPhase": "Control",
+  "startDate": "2025-04-01",
+  "targetCompletionDate": "2025-06-30",
+  "actualCompletionDate": "2025-09-30",
+  "financialImpact": {
+    "type": "Soft Savings",
+    "currency": "EUR",
+    "notes": "23 hours of annualized time savings (approximately 0.015 FTE); not separately monetized in this project."
+  },
+  "define": {
+    "processName": "TX-ADC Image Integration",
+    "processOwnerGroup": "ADC Processors",
+    "mentor": "Morgan Silva",
+    "problemStatement": "From January-March 2025, monthly releases of TX-ADC Jur updates required manually renaming an average of ~125 image files, taking 1.5 hours and yielding an 8% Teal error rate, which is critical and directly impacts processors' quality scores. These manual steps delay image integration in the Codes Workbench, push back audit requests and reviews, and ultimately delay release to Westlaw customers, extending end-to-end TAT for one of the team's largest jurisdictions.",
+    "goalStatement": "By June 30, 2025, reduce manual filename-renaming effort for TX-ADC Jur releases from 1.5 hours to 15 minutes or less per release (~83% reduction), cut the Teal error rate from 8% to ~1%, and eliminate downstream delays by enabling editor integration and audit request initiation on the same business day, improving overall TAT and on-time release performance to ~98%.",
+    "businessCase": "One of the Administrative Codes Team's core processes is section-level image processing during integration updates. Each month the team integrates hundreds of images, beginning with manual acquisition from state websites and entry into a tracker that assigns an automated image name (imgname) and identifier (imgid) - the values that should become the final filename. The issue is that the tracker can generate the imgid only after the entire batch has been saved, so images are first stored with temporary filenames and then manually renamed to the correct imgname/imgid, creating rework, delays, and a higher risk of naming errors.",
+    "expectedBenefits": [
+      "Cycle time: Reduce manual renaming from 1.5 hours to ~15 minutes per release (~83% reduction).",
+      "Throughput: ~95% of images renamed automatically; ~5% exceptions require manual review.",
+      "Handoffs/TAT: Enable same-business-day integration to Codes Workbench and audit request initiation for ~98% of releases."
+    ],
+    "identifiedSolution": "Build a PowerShell-based test tool and eventually a lightweight Python UI to automate and standardize updating of TX-ADC Jur image filenames.",
+    "addedBenefit": "23 Hours Time Savings or 0.015 FTE Savings",
+    "assumptions": [
+      "~95% of images per release can be processed automatically; ~5% require manual review.",
+      "Users will adopt the tool as the standard method for renaming."
+    ],
+    "dependencies": [
+      "Standards: Approved, versioned naming policy and exceptions catalog for TX-ADC Jur.",
+      "Logging/Controls: Backup with retention and rollback mechanism."
+    ],
+    "risks": [
+      { "risk": "Incorrect tool usage causing mass misnaming", "mitigation": "Mandatory dry-run, sample check, and one-click rollback." },
+      { "risk": "Low adoption by processors", "mitigation": "Short training, quick guide, champions in each team, and usage monitoring." }
+    ],
+    "scope": {
+      "firstProcessStep": "Tool Development",
+      "lastProcessStep": "Sitewide Project Kickoff Meeting and Documentation Rollout",
+      "inScope": ["Process simplification, error reduction, and development of a standardized process."],
+      "outOfScope": ["Systems modification, process redesign"]
+    },
+    "team": {
+      "sponsor": "Riley Chen",
+      "blackBelt": "Kyle Go",
+      "members": ["Jordan Reyes"]
+    },
+    "sipoc": {
+      "suppliers": ["State Website Images that must be manually extracted."],
+      "inputs": ["Image Tracker where images are manually logged for IMGID and IMGName."],
+      "process": ["Manual renaming of images prior to integration to Codes Workbench."],
+      "outputs": ["Mixed-quality filenames which produces teal errors and rework that delays audit review and release."],
+      "customers": ["Westlaw Subscribers"]
+    },
+    "voc": []
+  },
+  "measure": {
+    "dataCollectionPlan": [
+      { "metric": "Manual renaming time per release", "operationalDefinition": "Minutes/hours spent manually renaming image files to match IMGID per release, sampled per processor per month", "dataSource": "Processor time tracking samples", "sampleSize": 3, "collectionPeriod": "January - March 2025" },
+      { "metric": "Teal error rate", "operationalDefinition": "Percentage of renamed images flagged as Teal (critical) errors during audit review", "dataSource": "Audit review error log", "sampleSize": 125, "collectionPeriod": "January - March 2025" }
+    ],
+    "baselineMetrics": [
+      { "metric": "Manual renaming time per release", "baselineValue": 1.5, "unit": "hours" },
+      { "metric": "Teal error rate", "baselineValue": 8, "unit": "%" },
+      { "metric": "Images processed per release", "baselineValue": 125, "unit": "images" }
+    ],
+    "valueStreamMap": {
+      "timeUnit": "hours",
+      "steps": [
+        { "step": "Image Extraction from State Website (ADC Processor)", "stepLabel": "VA", "vaTime": 2, "envaNvaTime": 0, "waitTime": 0 },
+        { "step": "Logging of images in Image Tracker for generation of IMGID and IMGName (ADC Processor)", "stepLabel": "ENVA", "vaTime": 0, "envaNvaTime": 1, "waitTime": 0 },
+        { "step": "Manual renaming of image files to match IMGID (ADC Processor)", "stepLabel": "NVA", "vaTime": 0, "envaNvaTime": 1.5, "waitTime": 0 },
+        { "step": "Integration of images to Codes Workbench and requesting of audit (ADC Processor)", "stepLabel": "VA", "vaTime": 1, "envaNvaTime": 0, "waitTime": 0 },
+        { "step": "Attorney Editor Review (Auditor)", "stepLabel": "VA", "vaTime": 2, "envaNvaTime": 0, "waitTime": 1 },
+        { "step": "Apply corrections and request corrections audit (ADC Processor)", "stepLabel": "VA", "vaTime": 0.5, "envaNvaTime": 0, "waitTime": 25 },
+        { "step": "Release update to Westlaw (ADC Processor)", "stepLabel": "VA", "vaTime": 0.5, "envaNvaTime": 0, "waitTime": 0 }
+      ]
+    },
+    "notes": "Baseline sampled from 3 processor-months (Jan-Mar 2025), averaging ~125 images per release."
+  },
+  "analyze": {
+    "rootCauseAnalysis": {
+      "fishbone": { "categories": [] },
+      "fiveWhys": [
+        {
+          "problem": "The manual renaming of image files in TX-ADC is causing delays in handoffs, errors affecting KPIs, and delays in overall TAT of product release.",
+          "whys": [
+            { "why": "Why do processors need to manually rename files?", "because": "Because final filenames (IMGID) aren't available at the moment files are saved." },
+            { "why": "Why aren't final filenames (IMGID) available at save time?", "because": "Because the image tracker generates IMGID only after the full batch is saved." },
+            { "why": "Why does the tracker generate IMGID only after a full batch save?", "because": "Because the current workflow and tooling don't support pre-save ID assignment." },
+            { "why": "Why isn't there tooling to bind tracker metadata to filenames automatically?", "because": "Because there is no integration between the tracker and the file system to apply naming rules and set filenames in bulk." },
+            { "why": "Why hasn't this integration been built?", "because": "Because prior roadmaps focused on downstream editor/audit features, and the ROI for fixing the naming bottleneck wasn't quantified until now." }
+          ],
+          "rootCause": "Absent automated controls at the naming step, leaving processors to perform a manual, time-consuming, and error-prone renaming method.",
+          "actions": [
+            "Automate a Filename Update Tool that can rename batches of image files.",
+            "Ensure that the tool has a backup system and rollback mechanism.",
+            "Prioritize this control point with KPIs (cycle time, Teal error rate, same-day handoff)."
+          ]
+        }
+      ]
+    },
+    "pareto": [],
+    "findings": "The 8% Teal error rate and 1.5-hour manual renaming effort stem from a single root cause: the naming tool cannot assign final IMGID/imgname values until after a batch save, forcing a manual, error-prone rename step for every release."
+  },
+  "improve": {
+    "solutions": [
+      { "description": "Built a PowerShell-based Filename Update Tool to automate batch renaming of image files to match tracker-assigned IMGID/imgname.", "owner": "Kyle Go", "implementationDate": "2025-06-15" }
+    ],
+    "pilotResults": {
+      "pilotPeriod": "2025-07-01 to 2025-09-30",
+      "summary": "Post-improvement samples across July-September 2025 showed manual renaming effort falling to roughly 15 minutes per release on average (down from 1.5 hours), with total end-to-end process time dropping from an average of 31.25 hours to about 6.67 hours per release."
+    }
+  },
+  "control": {
+    "controlPlan": [
+      { "metric": "Teal error rate", "target": "≤ 1%", "frequency": "Monthly", "owner": "Kyle Go", "responseIfOutOfControl": "Audit the failed batch, retrain on exception handling, and re-run dry-run validation before the next release" },
+      { "metric": "Manual renaming time per release", "target": "≤ 15 minutes", "frequency": "Per release", "owner": "Kyle Go", "responseIfOutOfControl": "Investigate exception volume; escalate to the tool owner if manual review exceeds 10% of images" }
+    ],
+    "riskMitigation": [
+      { "risk": "Incorrect tool usage causing mass misnaming", "frequency": "Every release", "responsibility": "Kyle Go", "reactionPlan": "Run the mandatory dry-run and sample check before applying batch renames; use the one-click rollback if errors are found", "result": "No mass-misnaming incidents recorded since go-live" },
+      { "risk": "Low adoption by processors", "frequency": "Monthly", "responsibility": "Jordan Reyes", "reactionPlan": "Review tool usage logs; provide refresher training or pair processors with a champion if adoption drops", "result": "Tool adoption sustained above 95% of eligible releases" }
+    ],
+    "monitoringMetrics": ["Teal error rate", "Manual renaming time per release", "Tool adoption rate"],
+    "standardWorkDocs": [
+      { "title": "Filename Update Tool - Quick Guide", "url": "https://intranet.example.com/guides/filename-update-tool" }
+    ],
+    "finalResults": {
+      "summary": "Following go-live, the Filename Update Tool sustained manual renaming effort at roughly 15 minutes per release (down from 1.5 hours) and held the Teal error rate at approximately 1.1% across monthly releases, meeting the project's cycle time and quality goals. Dry-run validation and one-click rollback have handled the rare exception batches with no mass-misnaming incidents to date.",
+      "keyMetricsAfter": [
+        { "metric": "Manual renaming time per release", "value": 0.25, "unit": "hours" },
+        { "metric": "Teal error rate", "value": 1.1, "unit": "%" },
+        { "metric": "Images processed per release", "value": 136.33, "unit": "images" }
+      ]
+    }
+  },
+  "createdAt": "2025-04-01T09:00:00Z",
+  "updatedAt": "2025-09-30T09:00:00Z"
+}
